@@ -2,219 +2,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Interior View Racing</title>
+<title>Free Fire ID Shop</title>
 
 <style>
-
 body{
 margin:0;
-background:#111;
-overflow:hidden;
 font-family:Arial;
-}
-
-#score{
-position:absolute;
-top:10px;
-left:10px;
+background:#0f172a;
 color:white;
-font-size:22px;
+text-align:center;
 }
 
-#game{
-width:400px;
-height:600px;
-margin:auto;
-background:#444;
-position:relative;
-overflow:hidden;
+header{
+background:#f97316;
+padding:20px;
+font-size:30px;
+font-weight:bold;
 }
 
-#road{
-position:absolute;
-width:200px;
-height:600px;
-left:100px;
-background:linear-gradient(#555,#777);
-}
-
-.line{
-position:absolute;
-width:10px;
-height:80px;
-background:white;
-left:195px;
-}
-
-.enemy{
-position:absolute;
-width:40px;
-height:70px;
-background:red;
-top:-100px;
-}
-
-#dashboard{
-position:absolute;
-bottom:0;
-width:100%;
-height:170px;
-background:#000;
+.container{
 display:flex;
 justify-content:center;
-align-items:center;
+flex-wrap:wrap;
+padding:20px;
 }
 
-#steering{
-width:120px;
-height:120px;
-border:10px solid #888;
-border-radius:50%;
-position:relative;
+.card{
+background:#1e293b;
+width:280px;
+border-radius:12px;
+padding:15px;
+margin:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
-#steering:after{
-content:'';
-position:absolute;
-width:10px;
-height:60px;
-background:#888;
-left:50%;
-top:10px;
-transform:translateX(-50%);
+.card img{
+width:100%;
+border-radius:10px;
 }
 
+.price{
+font-size:22px;
+color:#22c55e;
+margin:10px 0;
+}
+
+button{
+background:#22c55e;
+border:none;
+padding:12px 20px;
+font-size:18px;
+border-radius:8px;
+cursor:pointer;
+color:white;
+}
+
+button:hover{
+background:#16a34a;
+}
+
+footer{
+margin-top:20px;
+padding:10px;
+font-size:14px;
+color:#aaa;
+}
 </style>
 </head>
 
 <body>
 
-<div id="score">Score: 0</div>
+<header>
+🔥 Free Fire ID Store
+</header>
 
-<div id="game">
+<div class="container">
 
-<div id="road"></div>
+<div class="card">
 
-<div id="dashboard">
-<div id="steering"></div>
+<img src="https://i.imgur.com/4ZQZ4ZP.jpg">
+
+<h2>Level 70 Pro ID</h2>
+
+<p>🔥 Rare Bundles</p>
+<p>💎 2000+ Diamonds Used</p>
+<p>🏆 Grandmaster Rank</p>
+
+<div class="price">₹1500</div>
+
+<button onclick="buyNow()">BUY NOW</button>
+
 </div>
 
 </div>
+
+<footer>
+Contact on WhatsApp to purchase
+</footer>
 
 <script>
 
-let game=document.getElementById("game");
-let steering=document.getElementById("steering");
+function buyNow(){
 
-let speed=6;
-let score=0;
-let lane=1;
+let number="919324620736";
 
-let lanes=[140,180,220];
+let message="Hello I want to buy your Free Fire ID";
 
-document.addEventListener("keydown",control);
+let url="https://wa.me/"+number+"?text="+encodeURIComponent(message);
 
-function control(e){
-
-if(e.key==="ArrowLeft" && lane>0){
-lane--;
-steering.style.transform="rotate(-30deg)";
-setTimeout(()=>steering.style.transform="rotate(0deg)",200);
-}
-
-if(e.key==="ArrowRight" && lane<2){
-lane++;
-steering.style.transform="rotate(30deg)";
-setTimeout(()=>steering.style.transform="rotate(0deg)",200);
-}
+window.open(url,"_blank");
 
 }
-
-for(let i=0;i<6;i++){
-let line=document.createElement("div");
-line.classList.add("line");
-line.style.top=(i*120)+"px";
-game.appendChild(line);
-}
-
-function moveLines(){
-
-let lines=document.querySelectorAll(".line");
-
-lines.forEach(function(line){
-
-let top=parseInt(line.style.top);
-
-top+=speed;
-
-if(top>600) top=-100;
-
-line.style.top=top+"px";
-
-});
-
-}
-
-function createEnemy(){
-
-let enemy=document.createElement("div");
-enemy.classList.add("enemy");
-
-enemy.style.left=lanes[Math.floor(Math.random()*3)]+"px";
-
-game.appendChild(enemy);
-
-}
-
-function moveEnemy(){
-
-let enemies=document.querySelectorAll(".enemy");
-
-enemies.forEach(function(enemy){
-
-let top=enemy.offsetTop;
-
-top+=speed;
-
-enemy.style.top=top+"px";
-
-let enemyLane=lanes.indexOf(parseInt(enemy.style.left));
-
-if(top>400 && enemyLane===lane){
-
-alert("💥 Crash! Score: "+score);
-location.reload();
-
-}
-
-if(top>600){
-
-enemy.remove();
-
-score++;
-
-speed+=0.2;
-
-document.getElementById("score").innerText="Score: "+score;
-
-}
-
-});
-
-}
-
-function gameLoop(){
-
-moveLines();
-moveEnemy();
-
-requestAnimationFrame(gameLoop);
-
-}
-
-setInterval(createEnemy,1400);
-
-gameLoop();
 
 </script>
 
