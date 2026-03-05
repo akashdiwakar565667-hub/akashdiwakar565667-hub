@@ -1,31 +1,16 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ultimate Racing Game</title>
+<title>Interior View Racing</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
 background:#111;
 overflow:hidden;
-}
-
-#menu{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-color:white;
-text-align:center;
-}
-
-button{
-padding:12px 25px;
-font-size:20px;
-cursor:pointer;
-margin:5px;
+font-family:Arial;
 }
 
 #score{
@@ -36,52 +21,67 @@ color:white;
 font-size:22px;
 }
 
-#gameArea{
+#game{
 width:400px;
 height:600px;
 margin:auto;
-background:url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
-background-size:cover;
+background:#444;
 position:relative;
 overflow:hidden;
-display:none;
 }
 
-.roadLine{
-width:10px;
-height:100px;
-background:white;
+#road{
 position:absolute;
+width:200px;
+height:600px;
+left:100px;
+background:linear-gradient(#555,#777);
+}
+
+.line{
+position:absolute;
+width:10px;
+height:80px;
+background:white;
 left:195px;
 }
 
-#player{
-width:50px;
-height:90px;
-position:absolute;
-bottom:20px;
-left:175px;
-}
-
 .enemy{
-width:50px;
-height:90px;
 position:absolute;
+width:40px;
+height:70px;
+background:red;
 top:-100px;
 }
 
-#mobileControls{
+#dashboard{
 position:absolute;
-bottom:10px;
+bottom:0;
 width:100%;
-text-align:center;
-display:none;
+height:170px;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-.controlBtn{
-font-size:25px;
-padding:10px 20px;
-margin:5px;
+#steering{
+width:120px;
+height:120px;
+border:10px solid #888;
+border-radius:50%;
+position:relative;
+}
+
+#steering:after{
+content:'';
+position:absolute;
+width:10px;
+height:60px;
+background:#888;
+left:50%;
+top:10px;
+transform:translateX(-50%);
 }
 
 </style>
@@ -89,111 +89,57 @@ margin:5px;
 
 <body>
 
-<div id="menu">
-<h1>Ultimate Racing Game</h1>
-<button onclick="startGame()">START</button>
-</div>
-
 <div id="score">Score: 0</div>
 
-<div id="gameArea">
-<img id="player" src="https://cdn-icons-png.flaticon.com/512/744/744465.png">
+<div id="game">
+
+<div id="road"></div>
+
+<div id="dashboard">
+<div id="steering"></div>
 </div>
 
-<div id="mobileControls">
-<button class="controlBtn" onclick="moveLeft()">⬅</button>
-<button class="controlBtn" onclick="moveRight()">➡</button>
 </div>
 
 <script>
 
-let gameArea=document.getElementById("gameArea");
-let player=document.getElementById("player");
+let game=document.getElementById("game");
+let steering=document.getElementById("steering");
 
+let speed=6;
 let score=0;
-let speed=5;
-let playerX=175;
-let running=false;
+let lane=1;
 
-let lanes=[40,175,310];
+let lanes=[140,180,220];
 
 document.addEventListener("keydown",control);
 
-function startGame(){
-
-document.getElementById("menu").style.display="none";
-
-gameArea.style.display="block";
-
-document.getElementById("mobileControls").style.display="block";
-
-createRoad();
-
-running=true;
-
-setInterval(createEnemy,1200);
-
-gameLoop();
-
-}
-
 function control(e){
 
-if(!running) return;
-
-if(e.key==="ArrowLeft") moveLeft();
-
-if(e.key==="ArrowRight") moveRight();
-
+if(e.key==="ArrowLeft" && lane>0){
+lane--;
+steering.style.transform="rotate(-30deg)";
+setTimeout(()=>steering.style.transform="rotate(0deg)",200);
 }
 
-function moveLeft(){
-
-let index=lanes.indexOf(playerX);
-
-if(index>0){
-
-playerX=lanes[index-1];
-
-player.style.left=playerX+"px";
-
+if(e.key==="ArrowRight" && lane<2){
+lane++;
+steering.style.transform="rotate(30deg)";
+setTimeout(()=>steering.style.transform="rotate(0deg)",200);
 }
 
 }
 
-function moveRight(){
-
-let index=lanes.indexOf(playerX);
-
-if(index<2){
-
-playerX=lanes[index+1];
-
-player.style.left=playerX+"px";
-
-}
-
-}
-
-function createRoad(){
-
-for(let i=0;i<5;i++){
-
+for(let i=0;i<6;i++){
 let line=document.createElement("div");
-
-line.classList.add("roadLine");
-
-line.style.top=(i*150)+"px";
-
-gameArea.appendChild(line);
-
+line.classList.add("line");
+line.style.top=(i*120)+"px";
+game.appendChild(line);
 }
 
-}
+function moveLines(){
 
-function moveRoad(){
-
-let lines=document.querySelectorAll(".roadLine");
+let lines=document.querySelectorAll(".line");
 
 lines.forEach(function(line){
 
@@ -211,20 +157,12 @@ line.style.top=top+"px";
 
 function createEnemy(){
 
-let enemy=document.createElement("img");
-
-let cars=[
-"https://cdn-icons-png.flaticon.com/512/743/743007.png",
-"https://cdn-icons-png.flaticon.com/512/744/744465.png"
-];
-
-enemy.src=cars[Math.floor(Math.random()*cars.length)];
-
+let enemy=document.createElement("div");
 enemy.classList.add("enemy");
 
 enemy.style.left=lanes[Math.floor(Math.random()*3)]+"px";
 
-gameArea.appendChild(enemy);
+game.appendChild(enemy);
 
 }
 
@@ -240,20 +178,12 @@ top+=speed;
 
 enemy.style.top=top+"px";
 
-let playerRect=player.getBoundingClientRect();
+let enemyLane=lanes.indexOf(parseInt(enemy.style.left));
 
-let enemyRect=enemy.getBoundingClientRect();
+if(top>400 && enemyLane===lane){
 
-if(
-
-playerRect.left<enemyRect.right &&
-playerRect.right>enemyRect.left &&
-playerRect.top<enemyRect.bottom &&
-playerRect.bottom>enemyRect.top
-
-){
-
-crash();
+alert("💥 Crash! Score: "+score);
+location.reload();
 
 }
 
@@ -263,7 +193,7 @@ enemy.remove();
 
 score++;
 
-speed+=0.15;
+speed+=0.2;
 
 document.getElementById("score").innerText="Score: "+score;
 
@@ -273,29 +203,21 @@ document.getElementById("score").innerText="Score: "+score;
 
 }
 
-function crash(){
-
-running=false;
-
-alert("💥 Crash! Score: "+score);
-
-location.reload();
-
-}
-
 function gameLoop(){
 
-if(!running) return;
-
-moveRoad();
-
+moveLines();
 moveEnemy();
 
 requestAnimationFrame(gameLoop);
 
 }
 
+setInterval(createEnemy,1400);
+
+gameLoop();
+
 </script>
 
 </body>
 </html>
+```
