@@ -1,112 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anime Hub</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box}
+
 body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:#0f0f14;
-  color:#fff;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#0f0f14;
+color:#fff;
 }
+
 header{
-  background:linear-gradient(90deg,#ff512f,#dd2476);
-  padding:20px;
-  text-align:center;
-  font-size:28px;
-  font-weight:600;
-  letter-spacing:1px;
+background:linear-gradient(90deg,#ff512f,#dd2476);
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:600;
 }
+
 .search-bar{
-  padding:20px;
-  text-align:center;
+padding:20px;
+text-align:center;
 }
+
 .search-bar input{
-  width:90%;
-  max-width:500px;
-  padding:12px 15px;
-  border-radius:25px;
-  border:none;
-  outline:none;
-  font-size:16px;
+width:90%;
+max-width:500px;
+padding:12px 15px;
+border-radius:25px;
+border:none;
+outline:none;
+font-size:16px;
 }
-.section{ padding:20px; }
-.section h2{ margin:0 0 15px 10px; font-weight:600; }
+
+.section{padding:20px;}
+
+.section h2{
+margin:0 0 15px 10px;
+}
+
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:15px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:15px;
 }
+
 .card{
-  background:#1b1b25;
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .2s, box-shadow .2s;
+background:#1b1b25;
+border-radius:12px;
+overflow:hidden;
+cursor:pointer;
+transition:0.2s;
 }
+
 .card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 10px 20px rgba(0,0,0,.4);
+transform:translateY(-5px);
+box-shadow:0 10px 20px rgba(0,0,0,.4);
 }
+
 .card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
+width:100%;
+height:220px;
+object-fit:cover;
 }
+
 .card-title{
-  padding:10px;
-  font-size:14px;
-  text-align:center;
+padding:10px;
+font-size:14px;
+text-align:center;
 }
+
 .tag{
-  display:inline-block;
-  background:#ff512f;
-  padding:3px 8px;
-  border-radius:10px;
-  font-size:11px;
-  margin-top:6px;
+display:inline-block;
+background:#ff512f;
+padding:3px 8px;
+border-radius:10px;
+font-size:11px;
+margin-top:6px;
 }
+
 .watch-btn{
-  margin-top:8px;
-  padding:6px 10px;
-  border:none;
-  border-radius:8px;
-  background:#dd2476;
-  color:#fff;
-  font-size:12px;
-  cursor:pointer;
+margin-top:8px;
+padding:6px 10px;
+border:none;
+border-radius:8px;
+background:#dd2476;
+color:#fff;
+font-size:12px;
+cursor:pointer;
 }
-.watch-btn:hover{ opacity:.85; }
+
 footer{
-  text-align:center;
-  padding:20px;
-  color:#aaa;
-  font-size:13px;
+text-align:center;
+padding:20px;
+color:#aaa;
+font-size:13px;
 }
 </style>
 </head>
+
 <body>
 
 <header>🔥 Ultimate Anime Hub</header>
 
 <div class="search-bar">
-  <input type="text" id="search" placeholder="Search anime..." onkeyup="searchTitles()" />
+<input type="text" id="search" placeholder="Search anime..." onkeyup="searchTitles()">
 </div>
 
 <div class="section">
-  <h2>✨ Popular Anime Collection</h2>
-  <div class="grid" id="anime"></div>
+<h2>✨ Popular Anime Collection</h2>
+<div class="grid" id="anime"></div>
 </div>
 
 <footer>
-  Anime discovery demo • Click Watch to open info
+Anime discovery demo
 </footer>
 
 <script>
+
 const animeList = [
 "Naruto","Naruto Shippuden","Boruto","One Piece","Dragon Ball Z","Dragon Ball Super","Attack on Titan","Death Note","Demon Slayer","Jujutsu Kaisen",
 "Tokyo Ghoul","My Hero Academia","Black Clover","Bleach","Chainsaw Man","Spy x Family","Fullmetal Alchemist Brotherhood","Hunter x Hunter","One Punch Man","Sword Art Online",
@@ -115,54 +133,69 @@ const animeList = [
 "Classroom of the Elite","Horimiya","Your Lie in April","Kuroko no Basket","Psycho Pass","Parasyte","Made in Abyss","Odd Taxi","Hells Paradise","Solo Leveling"
 ];
 
-function slugify(text){
-  return text.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+function createCard(title){
+
+const card=document.createElement("div");
+card.className="card title-item";
+
+/* Anime related image */
+const img=`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(title)}`;
+
+/* Redirect link */
+const watchUrl=`https://watchanimeworld.net/?s=${encodeURIComponent(title)}`;
+
+card.innerHTML=`
+
+<img src="${img}">
+
+<div class="card-title">
+
+${title}<br>
+
+<span class="tag">Anime</span><br>
+
+<button class="watch-btn">Watch</button>
+
+</div>
+
+`;
+
+card.onclick=()=>{
+
+window.open(watchUrl,"_blank");
+
 }
 
-function createCard(title){
-  const card = document.createElement('div');
-  card.className='card title-item';
+return card;
 
-  const imgUrl = `https://picsum.photos/300/450?random=${Math.floor(Math.random()*1000)}`;
-  const infoUrl = `https://myanimelist.net/anime.php?q=${encodeURIComponent(title)}`;
-
-  card.innerHTML = `
-    <img src="${imgUrl}" alt="${title}">
-    <div class="card-title">
-      ${title}<br>
-      <span class="tag">Anime</span><br>
-      <button class="watch-btn">Watch</button>
-    </div>`;
-
-  // Make whole card clickable
-  card.addEventListener('click', (e)=>{
-    if(e.target.tagName !== 'BUTTON'){
-      window.open(infoUrl,'_blank');
-    }
-  });
-
-  // Button click works
-  card.querySelector('button').addEventListener('click', (e)=>{
-    e.stopPropagation();
-    window.open(infoUrl,'_blank');
-  });
-
-  return card;
 }
 
 function loadAnime(){
-  const box = document.getElementById('anime');
-  animeList.forEach(a=> box.appendChild(createCard(a)));
+
+const box=document.getElementById("anime");
+
+animeList.forEach(a=>{
+
+box.appendChild(createCard(a));
+
+});
+
 }
 
 function searchTitles(){
-  const q = document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.title-item').forEach(card=>{
-    card.style.display = card.innerText.toLowerCase().includes(q) ? 'block':'none';
-  });
+
+const q=document.getElementById("search").value.toLowerCase();
+
+document.querySelectorAll(".title-item").forEach(card=>{
+
+card.style.display=card.innerText.toLowerCase().includes(q)?"block":"none";
+
+});
+
 }
 
 loadAnime();
+
 </script>
 
 </body>
