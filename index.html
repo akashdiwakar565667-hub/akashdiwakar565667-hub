@@ -45,33 +45,39 @@ cursor:pointer;
 margin-left:8px;
 }
 
-.searchBox button:hover{
-background:#cc0000;
-}
-
 h2{
 padding-left:20px;
 }
 
 .container{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
 gap:18px;
 padding:20px;
 }
 
 .card{
 background:#1a1a1a;
-padding:12px;
 border-radius:8px;
 cursor:pointer;
 transition:0.3s;
 text-align:center;
+overflow:hidden;
 }
 
 .card:hover{
 transform:scale(1.07);
-background:#262626;
+}
+
+.card img{
+width:100%;
+height:230px;
+object-fit:cover;
+}
+
+.card h3{
+padding:10px;
+font-size:15px;
 }
 
 footer{
@@ -92,12 +98,11 @@ margin-top:40px;
 <div class="searchBox">
 
 <input id="searchInput" placeholder="Search any anime...">
-
 <button onclick="searchAnime()">Search</button>
 
 </div>
 
-<h2>Top 100 Anime</h2>
+<h2>Top Anime</h2>
 
 <div class="container" id="anime"></div>
 
@@ -106,18 +111,12 @@ margin-top:40px;
 <script>
 
 function searchAnime(){
-
 let q=document.getElementById("searchInput").value
-
 if(q!=""){
-
 window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(q)
-
+}
 }
 
-}
-
-// ENTER key search
 document.getElementById("searchInput").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 searchAnime()
@@ -136,37 +135,35 @@ const animeList=[
 "Tokyo Revengers","Fire Force","No Game No Life","Overlord","Parasyte",
 "Assassination Classroom","Great Teacher Onizuka","JoJo Bizarre Adventure",
 "Cowboy Bebop","Neon Genesis Evangelion","Psycho Pass","Bungo Stray Dogs",
-"Made in Abyss","Kuroko no Basket","Food Wars","Seven Deadly Sins",
-"Black Lagoon","Hellsing Ultimate","Erased","Angel Beats","Clannad",
-"Clannad After Story","Toradora","Your Lie in April","Horimiya",
-"Kaguya Sama Love is War","Darling in the Franxx","Future Diary",
-"Another","Monster","The Promised Neverland","Ranking of Kings",
-"86 Eighty Six","Akira","Trigun","Samurai Champloo","Dororo",
-"Inuyasha","Noragami","Golden Kamuy","Dorohedoro","Devilman Crybaby",
-"Beastars","Great Pretender","Vivy Fluorite Eye Song","Cyberpunk Edgerunners",
-"Blue Exorcist","Mushoku Tensei","The Rising of the Shield Hero",
-"That Time I Got Reincarnated as a Slime","Classroom of the Elite",
-"The Eminence in Shadow","Zom 100","Hell's Paradise",
-"Call of the Night","Tomodachi Game","Undead Unluck",
-"Oshi no Ko","Frieren Beyond Journey End","Pluto",
-"Heavenly Delusion","Wind Breaker","Mashle Magic and Muscles",
-"Shangri La Frontier"
+"Made in Abyss","Kuroko no Basket","Food Wars","Seven Deadly Sins"
 
 ]
 
 const container=document.getElementById("anime")
 
-animeList.forEach(a=>{
+animeList.forEach(anime=>{
+
+fetch("https://api.jikan.moe/v4/anime?q="+encodeURIComponent(anime)+"&limit=1")
+.then(res=>res.json())
+.then(data=>{
+
+let img=data.data[0]?.images?.jpg?.image_url || ""
 
 let card=document.createElement("div")
 card.className="card"
-card.innerHTML="<h3>"+a+"</h3>"
+
+card.innerHTML=`
+<img src="${img}">
+<h3>${anime}</h3>
+`
 
 card.onclick=()=>{
-window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(a)
+window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(anime)
 }
 
 container.appendChild(card)
+
+})
 
 })
 
