@@ -1,115 +1,113 @@
-```html
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Akash Anime Hub</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>StreamFlix</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-}
-
+/* General */
 body{
-background:#0a0a0f;
+margin:0;
+font-family:Arial;
+background:#111;
 color:white;
 }
 
-/* HEADER */
+/* Navbar */
 
 header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px 40px;
-background:#111;
-border-bottom:1px solid #222;
+padding:20px;
+background:black;
+position:sticky;
+top:0;
 }
 
 .logo{
-font-size:22px;
-font-weight:600;
-color:#ff2e63;
+color:red;
+font-size:28px;
 }
 
-.search{
-padding:10px;
-border-radius:20px;
+nav a{
+margin:10px;
+color:white;
+text-decoration:none;
+}
+
+nav a:hover{
+color:red;
+}
+
+.signin{
+background:red;
 border:none;
-width:250px;
+padding:8px 16px;
+color:white;
+cursor:pointer;
+border-radius:4px;
 }
 
-/* MESSAGE */
+/* Banner */
 
-.topmsg{
+.banner{
+height:70vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 text-align:center;
-padding:12px;
-background:#14141c;
-font-size:14px;
-color:#aaa;
+background:url("https://wallpaperaccess.com/full/329583.jpg");
+background-size:cover;
 }
 
-/* ABOUT */
+.banner button{
+background:red;
+border:none;
+padding:12px 25px;
+font-size:16px;
+color:white;
+cursor:pointer;
+}
+
+/* Movies */
+
+.movies{
+padding:20px;
+}
+
+.movie-row{
+display:flex;
+gap:15px;
+overflow-x:auto;
+}
+
+.movie-card img{
+width:200px;
+border-radius:6px;
+transition:0.3s;
+}
+
+.movie-card img:hover{
+transform:scale(1.1);
+}
+
+/* About */
 
 .about{
-padding:50px 20px;
-text-align:center;
-max-width:800px;
-margin:auto;
-line-height:1.7;
-}
-
-.about h2{
-margin-bottom:10px;
-}
-
-/* GRID */
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:20px;
 padding:40px;
-}
-
-.card{
-background:#14141c;
-border-radius:12px;
-overflow:hidden;
-cursor:pointer;
-transition:.3s;
-}
-
-.card:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px rgba(0,0,0,.8);
-}
-
-.card img{
-width:100%;
-height:250px;
-object-fit:cover;
-}
-
-.title{
-padding:10px;
+background:#000;
 text-align:center;
-font-size:14px;
 }
+
+/* Footer */
 
 footer{
 text-align:center;
-padding:30px;
-color:#777;
+padding:20px;
+background:black;
 }
 
 </style>
@@ -118,115 +116,97 @@ color:#777;
 
 <body>
 
+
 <header>
 
-<div class="logo">🔥 Akash Anime Hub</div>
+<h1 class="logo">StreamFlix</h1>
 
-<input class="search" placeholder="Search anime..." id="search">
+<nav>
+<a href="#">Home</a>
+<a href="#about">About</a>
+<button class="signin">Sign In</button>
+</nav>
 
 </header>
 
-<div class="topmsg">
-Hey everyone I'm Akash — free anime for everyone.
+
+<section class="banner">
+
+<h1>Unlimited Movies, Shows and More</h1>
+<p>Watch anywhere. Cancel anytime.</p>
+
+<button>Start Watching</button>
+
+</section>
+
+
+
+<section class="movies">
+
+<h2>Trending Now</h2>
+
+<div class="movie-row">
+
+<div class="movie-card">
+<img src="https://picsum.photos/200/300?1">
 </div>
 
-<div class="about">
+<div class="movie-card">
+<img src="https://picsum.photos/200/300?2">
+</div>
 
-<h2>About This Site</h2>
+<div class="movie-card">
+<img src="https://picsum.photos/200/300?3">
+</div>
+
+<div class="movie-card">
+<img src="https://picsum.photos/200/300?4">
+</div>
+
+<div class="movie-card">
+<img src="https://picsum.photos/200/300?5">
+</div>
+
+</div>
+
+</section>
+
+
+
+<section id="about" class="about">
+
+<h2>About StreamFlix</h2>
 
 <p>
-
-Welcome to Akash Anime Hub.  
-This website helps you quickly discover hundreds of anime in one place.
-
-All anime shown here redirect you to a streaming source where you can watch them easily.
-
-My goal is to make anime discovery simple, fast, and free for everyone who loves anime.
-
-Enjoy exploring and watching your favourite shows.
-
+StreamFlix is a Netflix-inspired streaming UI made using HTML, CSS and JavaScript.
+This project demonstrates a modern movie browsing interface similar to Netflix.
 </p>
 
-</div>
+<p>
+Users can explore trending movies, watch content, and enjoy a clean streaming platform UI.
+</p>
 
-<div class="grid" id="animeGrid"></div>
+</section>
+
+
 
 <footer>
-
-Created by Akash • Anime redirect via watchanimeworld.net
-
+<p>© 2026 StreamFlix</p>
 </footer>
+
 
 <script>
 
-/* redirect */
+/* Sign In Button */
 
-function watch(title){
+document.querySelector(".signin").addEventListener("click", function(){
 
-window.open(`https://watchanimeworld.net/?s=${encodeURIComponent(title)}`,"_blank");
-
-}
-
-/* create card */
-
-function card(container,anime){
-
-let c=document.createElement("div");
-
-c.className="card";
-
-c.innerHTML=`
-
-<img src="${anime.images.jpg.large_image_url}">
-
-<div class="title">${anime.title}</div>
-
-`;
-
-c.onclick=()=>watch(anime.title);
-
-container.appendChild(c);
-
-}
-
-/* load 100+ anime */
-
-const grid=document.getElementById("animeGrid");
-
-for(let page=1;page<=5;page++){
-
-fetch(`https://api.jikan.moe/v4/top/anime?page=${page}`)
-
-.then(r=>r.json())
-
-.then(d=>{
-
-d.data.forEach(a=>card(grid,a));
-
-});
-
-}
-
-/* search */
-
-document.getElementById("search").addEventListener("keyup",function(){
-
-let q=this.value.toLowerCase();
-
-document.querySelectorAll(".card").forEach(card=>{
-
-card.style.display=
-
-card.innerText.toLowerCase().includes(q)
-
-?"block":"none";
-
-});
+alert("Sign In feature coming soon!");
 
 });
 
 </script>
 
+
 </body>
 </html>
-```
