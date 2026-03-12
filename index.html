@@ -112,9 +112,16 @@ window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(q)
 }
 }
 
+document.getElementById("searchInput").addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+searchAnime()
+}
+})
+
 const animeList=[
 
 {name:"Naruto",img:"https://cdn.myanimelist.net/images/anime/13/17405.jpg"},
+{name:"Naruto Shippuden",img:"https://cdn.myanimelist.net/images/anime/5/17407.jpg"},
 {name:"Attack on Titan",img:"https://cdn.myanimelist.net/images/anime/10/47347.jpg"},
 {name:"Demon Slayer",img:"https://cdn.myanimelist.net/images/anime/1286/99889.jpg"},
 {name:"Jujutsu Kaisen",img:"https://cdn.myanimelist.net/images/anime/1171/109222.jpg"},
@@ -126,14 +133,30 @@ const animeList=[
 {name:"Death Note",img:"https://cdn.myanimelist.net/images/anime/9/9453.jpg"},
 {name:"Chainsaw Man",img:"https://cdn.myanimelist.net/images/anime/1806/126216.jpg"},
 {name:"Black Clover",img:"https://cdn.myanimelist.net/images/anime/2/88336.jpg"},
-{name:"Solo Leveling",img:"https://cdn.myanimelist.net/images/anime/1803/141097.jpg"},
+
+{name:"Solo Leveling",img:"https://cdn.myanimelist.net/images/anime/1520/146218.jpg"},
 {name:"Blue Lock",img:"https://cdn.myanimelist.net/images/anime/1258/126929.jpg"},
 {name:"Vinland Saga",img:"https://cdn.myanimelist.net/images/anime/1500/103005.jpg"},
 {name:"Spy x Family",img:"https://cdn.myanimelist.net/images/anime/1441/122795.jpg"},
 {name:"My Hero Academia",img:"https://cdn.myanimelist.net/images/anime/10/78745.jpg"},
 {name:"Haikyuu",img:"https://cdn.myanimelist.net/images/anime/7/76014.jpg"},
 {name:"Tokyo Revengers",img:"https://cdn.myanimelist.net/images/anime/1839/122012.jpg"},
-{name:"Fire Force",img:"https://cdn.myanimelist.net/images/anime/1465/103132.jpg"}
+
+{name:"Fire Force",img:"https://cdn.myanimelist.net/images/anime/1668/102565.jpg"},
+{name:"Code Geass",img:"https://cdn.myanimelist.net/images/anime/5/50331.jpg"},
+{name:"Steins Gate",img:"https://cdn.myanimelist.net/images/anime/5/73199.jpg"},
+{name:"One Punch Man",img:"https://cdn.myanimelist.net/images/anime/12/76049.jpg"},
+{name:"Mob Psycho 100",img:"https://cdn.myanimelist.net/images/anime/8/80356.jpg"},
+{name:"Fairy Tail",img:"https://cdn.myanimelist.net/images/anime/5/18179.jpg"},
+{name:"Sword Art Online",img:"https://cdn.myanimelist.net/images/anime/11/39717.jpg"},
+{name:"Dr Stone",img:"https://cdn.myanimelist.net/images/anime/1613/102576.jpg"},
+{name:"Re Zero",img:"https://cdn.myanimelist.net/images/anime/1522/128039.jpg"},
+{name:"Overlord",img:"https://cdn.myanimelist.net/images/anime/7/88019.jpg"},
+{name:"Parasyte",img:"https://cdn.myanimelist.net/images/anime/3/73178.jpg"},
+{name:"No Game No Life",img:"https://cdn.myanimelist.net/images/anime/5/65187.jpg"},
+{name:"Akame ga Kill",img:"https://cdn.myanimelist.net/images/anime/13/61055.jpg"},
+{name:"Boruto",img:"https://cdn.myanimelist.net/images/anime/4/84177.jpg"},
+{name:"Gintama",img:"https://cdn.myanimelist.net/images/anime/10/73274.jpg"}
 
 ]
 
@@ -145,7 +168,7 @@ let card=document.createElement("div")
 card.className="card"
 
 card.innerHTML=`
-<img src="${a.img}">
+<img src="${a.img}" onerror="this.src='https://cdn.myanimelist.net/images/anime/4/19644.jpg'">
 <h3>${a.name}</h3>
 `
 
