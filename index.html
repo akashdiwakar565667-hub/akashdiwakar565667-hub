@@ -4,7 +4,6 @@
 <title>FleetFlix Anime</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
@@ -18,6 +17,7 @@ color:red;
 font-size:32px;
 padding:15px;
 font-weight:bold;
+text-align:center;
 }
 
 .searchBox{
@@ -27,11 +27,12 @@ margin-top:25px;
 
 .searchBox input{
 padding:12px;
-width:300px;
+width:250px;
 font-size:16px;
 border:none;
 border-radius:6px;
 outline:none;
+margin:5px;
 }
 
 .searchBox button{
@@ -42,7 +43,7 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-margin-left:8px;
+margin-left:5px;
 }
 
 .container{
@@ -82,7 +83,6 @@ padding:20px;
 background:black;
 margin-top:40px;
 }
-
 </style>
 </head>
 
@@ -91,11 +91,14 @@ margin-top:40px;
 <header>ABHISHEK BHAI JINDABAAD</header>
 
 <div class="searchBox">
-<div class="searchBox"> 
-<input id="searchInput" placeholder="Search any anime...">
-<button onclick="searchAnime()">Search</button>
-<input id="searchInput" placeholder="Search any anime...">
-<button onclick="searchMOVIES()">Search</button>
+
+<!-- ✅ Anime Search -->
+<input id="animeInput" placeholder="Search Anime...">
+<button onclick="searchAnime()">Anime</button>
+
+<!-- ✅ Movie Search -->
+<input id="movieInput" placeholder="Search Movies...">
+<button onclick="searchMovies()">Movies</button>
 
 </div>
 
@@ -107,97 +110,70 @@ margin-top:40px;
 
 <script>
 
+// ✅ Anime Search
 function searchAnime(){
-let q=document.getElementById("searchInput").value
+let q=document.getElementById("animeInput").value
 if(q!=""){
 window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(q)
 }
 }
 
-function searchMOVIES(){
-let q=document.getElementById("searchInput").value
+// ✅ Movie Search (FIXED URL)
+function searchMovies(){
+let q=document.getElementById("movieInput").value
 if(q!=""){
-window.location.href="https://net22.cc/home/?s="+encodeURIComponent(q)
+window.location.href="https://net22.cc/?s="+encodeURIComponent(q)
 }
 }
-  
-document.getElementById("searchInput").addEventListener("keypress",function(e){
+
+// ✅ ENTER KEY SUPPORT
+document.getElementById("animeInput").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 searchAnime()
 }
 })
-document.getElementById("searchInput").addEventListener("keypress",function(e){
+
+document.getElementById("movieInput").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
-searchMOVIES()
+searchMovies()
 }
 })
-const animeList=[
 
+// ✅ Anime List
+const animeList=[
 {name:"Naruto",img:"https://cdn.myanimelist.net/images/anime/13/17405.jpg"},
-{name:"Naruto Shippuden",img:"https://cdn.myanimelist.net/images/anime/5/17407.jpg"},
 {name:"Attack on Titan",img:"https://cdn.myanimelist.net/images/anime/10/47347.jpg"},
 {name:"Demon Slayer",img:"https://cdn.myanimelist.net/images/anime/1286/99889.jpg"},
 {name:"Jujutsu Kaisen",img:"https://cdn.myanimelist.net/images/anime/1171/109222.jpg"},
-{name:"Dragon Ball Super",img:"https://cdn.myanimelist.net/images/anime/7/74606.jpg"},
-{name:"Hunter x Hunter",img:"https://cdn.myanimelist.net/images/anime/1337/99013.jpg"},
-{name:"Tokyo Ghoul",img:"https://cdn.myanimelist.net/images/anime/5/64449.jpg"},
-{name:"Bleach",img:"https://cdn.myanimelist.net/images/anime/3/40451.jpg"},
 {name:"One Piece",img:"https://cdn.myanimelist.net/images/anime/6/73245.jpg"},
 {name:"Death Note",img:"https://cdn.myanimelist.net/images/anime/9/9453.jpg"},
 {name:"Chainsaw Man",img:"https://cdn.myanimelist.net/images/anime/1806/126216.jpg"},
-{name:"Black Clover",img:"https://cdn.myanimelist.net/images/anime/2/88336.jpg"},
-
-{name:"Solo Leveling",img:"https://cdn.myanimelist.net/images/anime/1520/146218.jpg"},
 {name:"Blue Lock",img:"https://cdn.myanimelist.net/images/anime/1258/126929.jpg"},
 {name:"Vinland Saga",img:"https://cdn.myanimelist.net/images/anime/1500/103005.jpg"},
-{name:"Spy x Family",img:"https://cdn.myanimelist.net/images/anime/1441/122795.jpg"},
-{name:"My Hero Academia",img:"https://cdn.myanimelist.net/images/anime/10/78745.jpg"},
-{name:"Haikyuu",img:"https://cdn.myanimelist.net/images/anime/7/76014.jpg"},
-{name:"Tokyo Revengers",img:"https://cdn.myanimelist.net/images/anime/1839/122012.jpg"},
-
-{name:"Fire Force",img:"https://cdn.myanimelist.net/images/anime/1668/102565.jpg"},
-{name:"Code Geass",img:"https://cdn.myanimelist.net/images/anime/5/50331.jpg"},
-{name:"Steins Gate",img:"https://cdn.myanimelist.net/images/anime/5/73199.jpg"},
-{name:"One Punch Man",img:"https://cdn.myanimelist.net/images/anime/12/76049.jpg"},
-{name:"Mob Psycho 100",img:"https://cdn.myanimelist.net/images/anime/8/80356.jpg"},
-{name:"Fairy Tail",img:"https://cdn.myanimelist.net/images/anime/5/18179.jpg"},
-{name:"Sword Art Online",img:"https://cdn.myanimelist.net/images/anime/11/39717.jpg"},
-{name:"Dr Stone",img:"https://cdn.myanimelist.net/images/anime/1613/102576.jpg"},
-{name:"Re Zero",img:"https://cdn.myanimelist.net/images/anime/1522/128039.jpg"},
-{name:"Overlord",img:"https://cdn.myanimelist.net/images/anime/7/88019.jpg"},
-{name:"Parasyte",img:"https://cdn.myanimelist.net/images/anime/3/73178.jpg"},
-{name:"No Game No Life",img:"https://cdn.myanimelist.net/images/anime/5/65187.jpg"},
-{name:"Akame ga Kill",img:"https://cdn.myanimelist.net/images/anime/13/61055.jpg"},
-{name:"Boruto",img:"https://cdn.myanimelist.net/images/anime/4/84177.jpg"},
-{name:"Gintama",img:"https://cdn.myanimelist.net/images/anime/10/73274.jpg"}
-
+{name:"Spy x Family",img:"https://cdn.myanimelist.net/images/anime/1441/122795.jpg"}
 ]
 
+// ✅ Render Cards
 const container=document.getElementById("anime")
 
 animeList.forEach(a=>{
-
 let card=document.createElement("div")
 card.className="card"
 
 card.innerHTML=`
-<img src="${a.img}" onerror="this.src='https://cdn.myanimelist.net/images/anime/4/19644.jpg'">
+<img src="${a.img}">
 <h3>${a.name}</h3>
 `
 
+// 👉 Card click = Anime search
 card.onclick=()=>{
 window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(a.name)
 }
-card.onclick=()=>{
-window.location.href="https://net22.cc/home/?s="+encodeURIComponent(a.name)
-}
-  
-container.appendChild(card)
 
+container.appendChild(card)
 })
 
 </script>
 
 </body>
 </html>
-
