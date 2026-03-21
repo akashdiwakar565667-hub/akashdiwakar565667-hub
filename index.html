@@ -88,12 +88,14 @@ margin-top:40px;
 
 <body>
 
-<header>FLEETFLIX</header>
+<header>ABHISHEK BHAI JINDABAAD</header>
 
 <div class="searchBox">
-
+<div class="searchBox"> 
 <input id="searchInput" placeholder="Search any anime...">
 <button onclick="searchAnime()">Search</button>
+<input id="searchInput" placeholder="Search any anime...">
+<button onclick="searchMOVIES()">Search</button>
 
 </div>
 
@@ -101,7 +103,7 @@ margin-top:40px;
 
 <div class="container" id="anime"></div>
 
-<footer>FleetFlix Anime Library</footer>
+<footer>AURA OF FLEET BHAI Anime Library</footer>
 
 <script>
 
@@ -112,12 +114,23 @@ window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(q)
 }
 }
 
+function searchMOVIES(){
+let q=document.getElementById("searchInput").value
+if(q!=""){
+window.location.href="https://net22.cc/home/?s="+encodeURIComponent(q)
+}
+}
+  
 document.getElementById("searchInput").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 searchAnime()
 }
 })
-
+document.getElementById("searchInput").addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+searchMOVIES()
+}
+})
 const animeList=[
 
 {name:"Naruto",img:"https://cdn.myanimelist.net/images/anime/13/17405.jpg"},
@@ -175,7 +188,10 @@ card.innerHTML=`
 card.onclick=()=>{
 window.location.href="https://watchanimeworld.net/?s="+encodeURIComponent(a.name)
 }
-
+card.onclick=()=>{
+window.location.href="https://net22.cc/home/?s="+encodeURIComponent(a.name)
+}
+  
 container.appendChild(card)
 
 })
