@@ -5,7 +5,7 @@
 * HTML
 * CSS
 * JavaScript
-
+* python is pending (still learning) 
 ## 👨‍💻 Dev by 
 
 Akash Diwakar
