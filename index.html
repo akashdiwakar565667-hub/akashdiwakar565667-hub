@@ -2,71 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Stick Hero Ultimate+</title>
+<title>Stick Hero Pro</title>
 
 <style>
 body {
   margin: 0;
-  background: #222;
+  background: linear-gradient(#1e1e1e, #111);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 100vh;
   font-family: Arial;
-  touch-action: none;
   color: white;
 }
 
 canvas {
-  background: linear-gradient(#87CEEB, #e0f7ff);
-  border-radius: 10px;
+  background: linear-gradient(#87CEEB, #dff6ff);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.controls {
+  margin-top: 10px;
 }
 
 button, select {
-  position: absolute;
-  padding: 8px 15px;
-  font-size: 14px;
+  padding: 8px 14px;
+  margin: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-#startBtn { top: 40%; }
-#restartBtn { top: 50%; display:none; }
-
-#skinSelect {
-  top: 60%;
+button {
+  background: #ff4757;
+  color: white;
+  cursor: pointer;
 }
 
 #leaderboard {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  margin-top: 10px;
   font-size: 14px;
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 5px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
+<h2>🎮 Stick Hero Pro</h2>
+
 <canvas id="gameCanvas" width="375" height="375"></canvas>
 
-<button id="startBtn">Start</button>
-<button id="restartBtn">Restart</button>
+<div class="controls">
+  <button id="startBtn">Start</button>
+  <button id="restartBtn" style="display:none;">Restart</button>
 
-<select id="skinSelect">
-  <option value="black">Black</option>
-  <option value="red">Red</option>
-  <option value="blue">Blue</option>
-  <option value="green">Green</option>
-</select>
+  <select id="skinSelect">
+    <option value="black">Black</option>
+    <option value="red">Red</option>
+    <option value="blue">Blue</option>
+    <option value="green">Green</option>
+  </select>
+</div>
 
 <div id="leaderboard"></div>
 
 <script>
-// ===== CONFIG =====
+// ===== SETUP =====
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -75,26 +79,15 @@ const restartBtn = document.getElementById("restartBtn");
 const skinSelect = document.getElementById("skinSelect");
 const leaderboardDiv = document.getElementById("leaderboard");
 
-const width = 375;
-const height = 375;
-const platformHeight = 100;
+const W = 375, H = 375, PH = 100;
 
 // ===== STATE =====
 let phase = "start";
-let heroX = 50, heroY = 0;
-let sceneOffset = 0;
-
-let platforms = [];
-let sticks = [];
-let score = 0;
-let step = 0;
-let heroColor = "black";
-
-// leaderboard
+let heroX, heroY, sceneOffset, platforms, sticks, score, step, heroColor="black";
 let scores = JSON.parse(localStorage.getItem("scores")) || [];
 
 // ===== INIT =====
-function setupGame() {
+function setup() {
   heroX = 50;
   heroY = 0;
   sceneOffset = 0;
@@ -102,24 +95,21 @@ function setupGame() {
   step = 0;
 
   platforms = [
-    { x: 50, w: 50 },
-    { x: 200, w: 60 }
+    {x:50, w:50},
+    {x:200, w:60}
   ];
 
   sticks = [
-    { x: platforms[0].x + platforms[0].w, length: 0, rotation: 0 }
+    {x:100, length:0, rotation:0}
   ];
 }
 
 // ===== LEADERBOARD =====
 function updateLeaderboard() {
-  leaderboardDiv.innerHTML = "<b>Top Scores</b><br>";
-  scores.slice(0,5).forEach((s,i)=>{
-    leaderboardDiv.innerHTML += `${i+1}. ${s}<br>`;
-  });
+  leaderboardDiv.innerHTML = "<b>🏆 Top Scores</b><br>";
+  scores.forEach((s,i)=> leaderboardDiv.innerHTML += `${i+1}. ${s}<br>`);
 }
 
-// ===== SAVE SCORE =====
 function saveScore() {
   scores.push(score);
   scores.sort((a,b)=>b-a);
@@ -128,23 +118,20 @@ function saveScore() {
   updateLeaderboard();
 }
 
-// ===== START =====
+// ===== EVENTS =====
 startBtn.onclick = () => {
-  startBtn.style.display = "none";
+  setup();
   phase = "waiting";
-  setupGame();
+  startBtn.style.display="none";
 };
 
 restartBtn.onclick = () => {
-  restartBtn.style.display = "none";
+  setup();
   phase = "waiting";
-  setupGame();
+  restartBtn.style.display="none";
 };
 
-// ===== SKIN =====
-skinSelect.onchange = () => {
-  heroColor = skinSelect.value;
-};
+skinSelect.onchange = () => heroColor = skinSelect.value;
 
 // ===== LOOP =====
 function loop() {
@@ -157,122 +144,109 @@ function loop() {
 function update() {
   if (phase === "start" || phase === "gameover") return;
 
-  let stick = sticks[sticks.length - 1];
+  let stick = sticks[sticks.length-1];
 
-  if (phase === "stretching") stick.length += 3;
+  if (phase==="stretching") stick.length+=3;
 
-  if (phase === "turning") {
-    if (stick.rotation < 90) stick.rotation += 5;
-    else phase = "walking";
+  if (phase==="turning") {
+    if (stick.rotation<90) stick.rotation+=5;
+    else phase="walking";
   }
 
-  if (phase === "walking") {
-    heroX += 2;
-    step += 0.2;
+  if (phase==="walking") {
+    heroX+=2;
+    step+=0.2;
 
     let target = platforms[1];
 
-    if (heroX > stick.x + stick.length) phase = "falling";
+    if (heroX > stick.x + stick.length) phase="falling";
 
     if (heroX > target.x && heroX < target.x + target.w) {
       score++;
-      nextPlatform();
+      next();
     }
   }
 
-  if (phase === "falling") {
-    heroY += 5;
-    if (heroY > height) {
-      phase = "gameover";
-      restartBtn.style.display = "block";
+  if (phase==="falling") {
+    heroY+=5;
+    if (heroY>H) {
+      phase="gameover";
+      restartBtn.style.display="inline-block";
       saveScore();
     }
   }
 }
 
-// ===== NEXT =====
-function nextPlatform() {
-  sceneOffset += 120;
-
+// ===== NEXT PLATFORM =====
+function next() {
+  sceneOffset+=120;
   platforms.shift();
 
-  let newX = platforms[0].x + 100 + Math.random() * 120;
-  let newW = 30 + Math.random() * 50;
+  let newX = platforms[0].x + 100 + Math.random()*120;
+  let newW = 30 + Math.random()*50;
 
-  platforms.push({ x: newX, w: newW });
-
-  sticks.push({
-    x: platforms[0].x + platforms[0].w,
-    length: 0,
-    rotation: 0
-  });
+  platforms.push({x:newX, w:newW});
+  sticks.push({x:platforms[0].x+platforms[0].w, length:0, rotation:0});
 
   heroX = platforms[0].x + platforms[0].w - 10;
-  phase = "waiting";
+  phase="waiting";
 }
 
 // ===== DRAW =====
 function draw() {
-  ctx.clearRect(0, 0, width, height);
+  ctx.clearRect(0,0,W,H);
 
   // platforms
-  ctx.fillStyle = "#000";
-  platforms.forEach(p => {
-    ctx.fillRect(p.x - sceneOffset, height - platformHeight, p.w, platformHeight);
+  ctx.fillStyle="black";
+  platforms.forEach(p=>{
+    ctx.fillRect(p.x - sceneOffset, H-PH, p.w, PH);
   });
 
   // stick
-  let stick = sticks[sticks.length - 1];
+  let s = sticks[sticks.length-1];
   ctx.save();
-  ctx.translate(stick.x - sceneOffset, height - platformHeight);
-  ctx.rotate((stick.rotation * Math.PI) / 180);
-  ctx.fillRect(0, -stick.length, 5, stick.length);
+  ctx.translate(s.x - sceneOffset, H-PH);
+  ctx.rotate(s.rotation*Math.PI/180);
+  ctx.fillRect(0,-s.length,5,s.length);
   ctx.restore();
 
   drawHero();
 
-  ctx.fillStyle = "black";
-  ctx.fillText("Score: " + score, 10, 20);
+  ctx.fillStyle="black";
+  ctx.fillText("Score: "+score,10,20);
 
-  if (phase === "start") ctx.fillText("Stick Hero", 130, 150);
-  if (phase === "gameover") ctx.fillText("Game Over", 120, 150);
+  if (phase==="start") ctx.fillText("Press Start",130,150);
+  if (phase==="gameover") ctx.fillText("Game Over",130,150);
 }
 
 // ===== HERO =====
 function drawHero() {
-  const x = heroX - sceneOffset;
-  const y = height - platformHeight + heroY;
+  let x = heroX - sceneOffset;
+  let y = H-PH + heroY;
 
   ctx.save();
-  ctx.translate(x, y);
+  ctx.translate(x,y);
 
   ctx.strokeStyle = heroColor;
   ctx.fillStyle = heroColor;
-  ctx.lineWidth = 3;
+  ctx.lineWidth=3;
 
   ctx.beginPath();
-  ctx.moveTo(10, -20);
-  ctx.lineTo(10, -5);
+  ctx.moveTo(10,-20);
+  ctx.lineTo(10,-5);
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(10, -25, 5, 0, Math.PI * 2);
+  ctx.arc(10,-25,5,0,Math.PI*2);
   ctx.fill();
 
-  let swing = Math.sin(step) * 5;
+  let swing = Math.sin(step)*5;
 
   ctx.beginPath();
-  ctx.moveTo(10, -5);
-  ctx.lineTo(10 - 5 + swing, 5);
-  ctx.moveTo(10, -5);
-  ctx.lineTo(10 + 5 - swing, 5);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(10, -15);
-  ctx.lineTo(10 - 5 - swing, -10);
-  ctx.moveTo(10, -15);
-  ctx.lineTo(10 + 5 + swing, -10);
+  ctx.moveTo(10,-5);
+  ctx.lineTo(5+swing,5);
+  ctx.moveTo(10,-5);
+  ctx.lineTo(15-swing,5);
   ctx.stroke();
 
   ctx.restore();
@@ -280,28 +254,22 @@ function drawHero() {
 
 // ===== CONTROLS =====
 function startAction() {
-  if (phase === "waiting") phase = "stretching";
+  if (phase==="waiting") phase="stretching";
 }
 function endAction() {
-  if (phase === "stretching") phase = "turning";
+  if (phase==="stretching") phase="turning";
 }
 
 window.addEventListener("mousedown", startAction);
 window.addEventListener("mouseup", endAction);
 
-window.addEventListener("touchstart", e => {
-  e.preventDefault();
-  startAction();
-});
-window.addEventListener("touchend", e => {
-  e.preventDefault();
-  endAction();
-});
+window.addEventListener("touchstart", e=>{e.preventDefault();startAction();});
+window.addEventListener("touchend", e=>{e.preventDefault();endAction();});
 
 // ===== START =====
 updateLeaderboard();
 loop();
-
 </script>
+
 </body>
 </html>
