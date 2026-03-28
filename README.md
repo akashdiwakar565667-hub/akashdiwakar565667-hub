@@ -11,7 +11,7 @@ A fun browser-based Stick Hero game built using HTML, CSS, and JavaScript.
 
 ## ▶️ Play Game
 Click here to play:  
-https://your-username.github.io/your-repo-name/
+https://akashdiwakar565667-hub.github.io
 
 ## 🕹️ How to Play
 - Hold click/touch to grow the stick  
