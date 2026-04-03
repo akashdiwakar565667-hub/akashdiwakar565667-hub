@@ -2,259 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Stick Hero Final</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aodikhau</title>
 
 <style>
-body {
-  margin: 0;
-  background: #111;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-family: Arial;
-  color: white;
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0f0f0f;
+  color:white;
 }
 
-canvas {
-  background: linear-gradient(#87CEEB, #e0f7ff);
-  border-radius: 10px;
+header{
+  background:#000;
+  padding:15px;
+  text-align:center;
+  font-size:28px;
+  font-weight:bold;
+  color:#ff2c2c;
+  letter-spacing:2px;
+  box-shadow:0 0 10px red;
 }
 
-/* CENTER START SCREEN */
-#startScreen {
-  position: absolute;
-  text-align: center;
+.search-box{
+  text-align:center;
+  margin:30px;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  background: red;
-  color: white;
-  cursor: pointer;
+.search-box input{
+  padding:12px;
+  width:300px;
+  border-radius:25px;
+  border:none;
+  outline:none;
 }
 
-#restartBtn {
-  display: none;
+.search-box button{
+  padding:12px 20px;
+  border:none;
+  border-radius:25px;
+  background:red;
+  color:white;
+  cursor:pointer;
+  margin-left:10px;
+  transition:0.3s;
 }
 
-.controls {
-  margin-top: 10px;
+.search-box button:hover{
+  background:#ff5555;
 }
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:#1a1a1a;
+  border-radius:15px;
+  overflow:hidden;
+  transition:0.4s;
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px red;
+}
+
+.card-title{
+  padding:10px;
+  text-align:center;
+}
+
+footer{
+  text-align:center;
+  padding:15px;
+  background:#000;
+  color:#aaa;
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="startScreen">
-  <h2>🎮 Stick Hero</h2>
-  <button id="startBtn">Start Game</button>
+<header>aodikhau</header>
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search movies or anime...">
+  <button onclick="searchContent()">Search</button>
 </div>
 
-<canvas id="gameCanvas" width="375" height="375"></canvas>
+<div class="grid">
 
-<div class="controls">
-  <button id="restartBtn">Restart</button>
-
-  <select id="skinSelect">
-    <option value="black">Black</option>
-    <option value="red">Red</option>
-    <option value="blue">Blue</option>
-    <option value="green">Green</option>
-  </select>
+<div class="card" onclick="play('naruto')">
+  <img src="https://cdn.myanimelist.net/images/anime/13/17405.jpg">
+  <div class="card-title">Naruto (Hindi Dub)</div>
 </div>
+
+<div class="card" onclick="play('attack on titan')">
+  <img src="https://cdn.myanimelist.net/images/anime/10/47347.jpg">
+  <div class="card-title">Attack on Titan (Hindi)</div>
+</div>
+
+<div class="card" onclick="play('one piece')">
+  <img src="https://cdn.myanimelist.net/images/anime/6/73245.jpg">
+  <div class="card-title">One Piece (Hindi)</div>
+</div>
+
+<div class="card" onclick="play('dragon ball super')">
+  <img src="https://cdn.myanimelist.net/images/anime/7/74606.jpg">
+  <div class="card-title">Dragon Ball Super (Hindi)</div>
+</div>
+
+<div class="card" onclick="play('demon slayer')">
+  <img src="https://cdn.myanimelist.net/images/anime/1286/99889.jpg">
+  <div class="card-title">Demon Slayer (Hindi)</div>
+</div>
+
+<div class="card" onclick="play('jujutsu kaisen')">
+  <img src="https://cdn.myanimelist.net/images/anime/1171/109222.jpg">
+  <div class="card-title">Jujutsu Kaisen (Hindi)</div>
+</div>
+
+</div>
+
+<footer>© 2026 aodikhau | Free Hindi Dubbed Content</footer>
 
 <script>
-// ===== SETUP =====
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-const startScreen = document.getElementById("startScreen");
-const startBtn = document.getElementById("startBtn");
-const restartBtn = document.getElementById("restartBtn");
-const skinSelect = document.getElementById("skinSelect");
-
-const W = 375, H = 375, PH = 100;
-
-// ===== STATE =====
-let phase = "start";
-let heroX=50, heroY=0, sceneOffset=0;
-let platforms=[], sticks=[];
-let score=0, step=0;
-let heroColor="black";
-
-// ===== INIT =====
-function setup() {
-  heroX=50;
-  heroY=0;
-  sceneOffset=0;
-  score=0;
-  step=0;
-
-  platforms=[
-    {x:50,w:50},
-    {x:200,w:60}
-  ];
-
-  sticks=[
-    {x:100,length:0,rotation:0}
-  ];
-}
-
-// ===== START =====
-startBtn.onclick = () => {
-  startScreen.style.display="none";
-  setup();
-  phase="waiting";
-};
-
-// ===== RESTART =====
-restartBtn.onclick = () => {
-  setup();
-  phase="waiting";
-  restartBtn.style.display="none";
-};
-
-// ===== SKIN =====
-skinSelect.onchange = () => heroColor = skinSelect.value;
-
-// ===== LOOP =====
-function loop(){
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-// ===== UPDATE =====
-function update(){
-  if(phase==="start" || phase==="gameover") return;
-
-  let stick = sticks[sticks.length-1];
-
-  if(phase==="stretching") stick.length+=3;
-
-  if(phase==="turning"){
-    if(stick.rotation<90) stick.rotation+=5;
-    else phase="walking";
-  }
-
-  if(phase==="walking"){
-    heroX+=2;
-    step+=0.2;
-
-    let target = platforms[1];
-
-    if(heroX > stick.x + stick.length) phase="falling";
-
-    if(heroX > target.x && heroX < target.x + target.w){
-      score++;
-      next();
-    }
-  }
-
-  if(phase==="falling"){
-    heroY+=5;
-    if(heroY>H){
-      phase="gameover";
-      restartBtn.style.display="inline-block";
-    }
+function searchContent(){
+  let query = document.getElementById('searchInput').value;
+  if(query.trim() !== ""){
+    window.location.href = "https://watch-v2.autoembed.app/?q=" + encodeURIComponent(query);
   }
 }
 
-// ===== NEXT =====
-function next(){
-  sceneOffset+=120;
-  platforms.shift();
-
-  let newX = platforms[0].x + 100 + Math.random()*120;
-  let newW = 30 + Math.random()*50;
-
-  platforms.push({x:newX,w:newW});
-  sticks.push({x:platforms[0].x+platforms[0].w,length:0,rotation:0});
-
-  heroX = platforms[0].x + platforms[0].w - 10;
-  phase="waiting";
+function play(title){
+  window.location.href = "https://watch-v2.autoembed.app/?q=" + encodeURIComponent(title);
 }
-
-// ===== DRAW =====
-function draw(){
-  ctx.clearRect(0,0,W,H);
-
-  ctx.fillStyle="black";
-  platforms.forEach(p=>{
-    ctx.fillRect(p.x - sceneOffset, H-PH, p.w, PH);
-  });
-
-  let s = sticks[sticks.length-1];
-  ctx.save();
-  ctx.translate(s.x - sceneOffset, H-PH);
-  ctx.rotate(s.rotation*Math.PI/180);
-  ctx.fillRect(0,-s.length,5,s.length);
-  ctx.restore();
-
-  drawHero();
-
-  ctx.fillStyle="black";
-  ctx.fillText("Score: "+score,10,20);
-
-  if(phase==="gameover"){
-    ctx.fillText("Game Over",130,150);
-  }
-}
-
-// ===== HERO =====
-function drawHero(){
-  let x = heroX - sceneOffset;
-  let y = H-PH + heroY;
-
-  ctx.save();
-  ctx.translate(x,y);
-
-  ctx.strokeStyle=heroColor;
-  ctx.fillStyle=heroColor;
-  ctx.lineWidth=3;
-
-  ctx.beginPath();
-  ctx.moveTo(10,-20);
-  ctx.lineTo(10,-5);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(10,-25,5,0,Math.PI*2);
-  ctx.fill();
-
-  let swing = Math.sin(step)*5;
-
-  ctx.beginPath();
-  ctx.moveTo(10,-5);
-  ctx.lineTo(5+swing,5);
-  ctx.moveTo(10,-5);
-  ctx.lineTo(15-swing,5);
-  ctx.stroke();
-
-  ctx.restore();
-}
-
-// ===== CONTROLS =====
-function startAction(){
-  if(phase==="waiting") phase="stretching";
-}
-function endAction(){
-  if(phase==="stretching") phase="turning";
-}
-
-window.addEventListener("mousedown", startAction);
-window.addEventListener("mouseup", endAction);
-
-window.addEventListener("touchstart", e=>{e.preventDefault();startAction();});
-window.addEventListener("touchend", e=>{e.preventDefault();endAction();});
-
-// ===== START LOOP =====
-loop();
 </script>
 
 </body>
